@@ -7,7 +7,7 @@
 #include <ESP32Servo.h>
 
 #include "button.h"
-#include "SSD1306.h"
+#include "SSD1306.h" // 모니터
 #include "OLEDDisplayUi.h"
 #include "IMDisplay.h"
 #include "IMConfigServer.h"
@@ -38,7 +38,7 @@ int screenH = 64;
 bool udp_setup = false;
 
 const int pin1 = 2;
-const int pin2 = 4;
+const int pin2 = 18;
 const int pin3 = 5;
 
 int speed = 10;
@@ -187,7 +187,7 @@ void setup()
   //  mainMotor();
  // DisplaySetup();
    mainMotor();
-    DisplaySetup();
+   DisplaySetup();
   WifiSetup();
 }
 
@@ -415,7 +415,7 @@ void loop()
 
        //if(remap_forward > 71)
         {
-          isGo = true; //hello
+          isGo = true;
         }
       
       Serial.printf("%d %d %d\n", remap_forward, remap_backward, remap_wheel);
