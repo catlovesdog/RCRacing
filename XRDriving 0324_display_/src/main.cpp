@@ -239,29 +239,11 @@ bool isReady = false;
 bool isStart = false;
 bool accelating = false;
 
-/*void ledcAnalogWrite(uint8_t channel,  uint32_t value, uint32_t valueMax = 255)
-{
-    uint32_t duty = (8191 /valueMax) * min(value, valueMax);
-    ledcWrite(channel, duty);
-}*/
+
 
 void loop()
 {
 
-  /* if(Serial.available())
-  {
-    char command = Serial.read();
-
-    if (command == 's')
-    {
-          DcControl.write(remap_backward);
-         delay(20);
-
-      Serial.println("stop");
-      DcControl.write(70);
-      delay(200000);
-    }
-  }*/
 
   if (udp_setup == true)
   {
