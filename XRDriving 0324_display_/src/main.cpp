@@ -152,7 +152,7 @@ void mainMotor()
   ledcSetup(0, 5000, 8); //일반모터
   ledcSetup(1, 5000, 8); // 일반모터
   //ledcSetup(2, 50, 8);   // 서보모터 5000/13
-  ledcSetup(2, 50, 13);  
+  ledcSetup(2, 50, 13);  //서보
 
   ledcAttachPin(pin1, 0);
   ledcAttachPin(pin2, 1);
@@ -219,8 +219,8 @@ int angle90 = 8191 * 0.05;//409.55
 int angle0 = 8191 * 0.075; //614.325
 int angle270 = 8191 * 0.1;//819.1
 
-const int wheel_range_min = 452;  //452
-const int wheel_range_max = 667; //667
+const int wheel_range_min = 700;  //452// 675~457
+const int wheel_range_max = 430; //667//675~450
 
 const int forward_range_min = 0;
 const int forward_range_max = 150;
@@ -292,7 +292,20 @@ void loop()
       byte remap_forward = map(go, 0, 255, forward_range_min, forward_range_max);
       byte remap_backward = map(back, 0, 255, backward_range_min, backward_range_max);
 
+      ledcWrite(2, remap_wheel);
+      Serial.println(remap_wheel);
 
+      if(remap_forward > 0)
+      {
+        digitalWrite(pin1, LOW);
+        ledcWrite(0, remap_forward);
+      }else if(remap_backward > 0)
+      {
+      ledcWrite(0, 0);
+      ledcWrite(1, 0);
+       // digitalWrite(pin2, LOW);
+       // ledcWrite(1, remap_backward); 
+      }
 
      /* if(remap_forward > 0)
       {
@@ -300,16 +313,16 @@ void loop()
           
           digitalWrite(pin1, LOW);
           Serial.printf("go %d", remap_forward);
-          ledcWrite(0, remap_forward);
-         ledcWrite(2, remap_wheel);
+        ledcWrite(0, remap_forward);
+      //   ledcWrite(2, remap_wheel);
 
       } else if (remap_backward  > 0)
       {
-        if(isStart == true)
-        {
-          Serial.println("stop");
-          ledcWrite(0, 0);
-          ledcWrite(1, 0);
+      //  if(isStart == true)
+      //  {
+       //   Serial.println("stop");
+       //   ledcWrite(0, 0);
+       //   ledcWrite(1, 0);
          ledcWrite(2, remap_wheel);
          // isStart = false;
         //  isReady = true;
@@ -325,7 +338,7 @@ void loop()
          isReady = false;
         }
         
-      } else*/
+      }*/
 
       
       
@@ -334,12 +347,12 @@ void loop()
       // byte - ~ 255 , > value % 255
 
 
-     // ledcWrite(2, remap_wheel);
-     
-      Serial.printf("%d : %d ( %d ~ %d)" , wheel , remap_wheel , wheel_range_min , wheel_range_max);
-      Serial.println();       
 
-      imdisplay::drawSignalStatus(display, remap_forward, remap_backward, remap_wheel);
+     
+     // Serial.printf("%d : %d ( %d ~ %d)" , wheel , remap_wheel , wheel_range_min , wheel_range_max);
+    //  Serial.println();       
+
+    //  imdisplay::drawSignalStatus(display, remap_forward, remap_backward, remap_wheel);
     }
   }
   else
