@@ -238,7 +238,6 @@ byte old_backward = 69;
 bool isReady = false;
 bool isStart = false;
 bool accelating = false;
-bool test3434 = false;
 
 
 void loop()
