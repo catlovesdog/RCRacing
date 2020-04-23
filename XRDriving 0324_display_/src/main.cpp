@@ -33,7 +33,7 @@ int screenH = 64;
 bool udp_setup = false;
 
 const int pin1 = 2;
-const int pin2 = 18;
+const int pin2 = 23; //18
 const int pin3 = 5;
 
 //Servo Mservo;
@@ -219,14 +219,14 @@ int angle90 = 8191 * 0.05;//409.55
 int angle0 = 8191 * 0.075; //614.325
 int angle270 = 8191 * 0.1;//819.1
 
-const int wheel_range_min = 700;  //452// 675~457
-const int wheel_range_max = 430; //667//675~450
+const int wheel_range_min = 1045;// 700;  //452// 675~457
+const int wheel_range_max = 200;// 430; //667//675~450
 
 const int forward_range_min = 0;
-const int forward_range_max = 150;
+const int forward_range_max = 30; //20 . 25
 
 const int backward_range_min = 0;
-const int backward_range_max = 150;
+const int backward_range_max = 35;
 
 const int stop = 70;
 const int go = 69;
@@ -238,7 +238,6 @@ byte old_backward = 69;
 bool isReady = false;
 bool isStart = false;
 bool accelating = false;
-bool test3434 = false;
 
 
 void loop()
@@ -269,24 +268,30 @@ void loop()
       }
 
       byte wheel = udp.read();
+      byte reverse = udp.read();
       //client.write(1);
       int remap_wheel = map(wheel, 60, 120, wheel_range_min, wheel_range_max); //213,500
       byte remap_forward = map(go, 0, 255, forward_range_min, forward_range_max);
-      byte remap_backward = map(back, 0, 255, backward_range_min, backward_range_max);
+      byte remap_backward = map(reverse, 128, 0, backward_range_min, backward_range_max);
 
       ledcWrite(2, remap_wheel);
       Serial.println(remap_wheel);
+     // Serial.println(remap_wheel);
 
       if(remap_forward > 0)
       {
         digitalWrite(pin1, LOW);
         ledcWrite(0, remap_forward);
-      }else if(remap_backward > 0)
+      }else if(remap_backward == 0)
       {
       ledcWrite(0, 0);
       ledcWrite(1, 0);
        // digitalWrite(pin2, LOW);
        // ledcWrite(1, remap_backward); 
+      } else if(remap_backward > 0)
+      {
+        digitalWrite(pin2, LOW);
+        ledcWrite(1, remap_backward);
       }
 
      /* if(remap_forward > 0)
@@ -330,11 +335,14 @@ void loop()
 
 
 
-     
-     // Serial.printf("%d : %d ( %d ~ %d)" , wheel , remap_wheel , wheel_range_min , wheel_range_max);
-    //  Serial.println();       
+    // Serial.printf("%d %d  %d  %d)" , wheel , remap_wheel , wheel_range_min , wheel_range_max);
 
-    //  imdisplay::drawSignalStatus(display, remap_forward, remap_backward, remap_wheel);
+   //  Serial.printf("%d : %d ( %d ~ %d)" , wheel , remap_wheel , wheel_range_min , wheel_range_max);
+    //  Serial.println();       
+  //  Serial.printf("----%d\n", reverse);
+  //  Serial.printf("------ %d\n", remap_backward);
+
+      imdisplay::drawSignalStatus(display, remap_forward, remap_backward, remap_wheel);
     }
   }
   else
